@@ -20,7 +20,7 @@ class MarkdownDigest(Digest):
         return toc
 
     def header(self) -> str:
-        toc = "## Table of contents\n\n"
+        toc = "## Conferences\n\n### Table of contents\n\n"
         for i in self.toc_items:
             toc += f"- {i}\n"
         return toc + "\n\n"
