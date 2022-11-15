@@ -1,13 +1,14 @@
 from typing import List
 from ugolino import Conference
 from ugolino.feeds import conference_feeds
-from ugolino.digests import MarkdownDigest
+from ugolino.digests import MarkdownDigest, RSSDigest
 
 
 class Aggregator:
     def __init__(self):
         self.conferences: List[Conference] = []
         self.markdown = MarkdownDigest(self)
+        self.rss = RSSDigest(self)
 
     def filter_new(self):
         self._filter_new(self.conferences)
