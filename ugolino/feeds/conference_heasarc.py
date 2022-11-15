@@ -1,10 +1,13 @@
+import logging
 import re
 import bs4
-import dateutil.parser
+from datetime import datetime, date
 
 from typing import List
 from ugolino import ConferenceFeed, Conference
+import ugolino.utils as utils
 
+logger = logging.Logger(__name__)
 
 class HEASARCFeed(ConferenceFeed):
     ROOT_URL = "https://heasarc.gsfc.nasa.gov/docs/heasarc/meetings.html"
@@ -18,6 +21,16 @@ class HEASARCFeed(ConferenceFeed):
                     # this tag is the first thing that marks a conference descriptioniption
                     yield tag
 
+    def parse_date(self, date: str) -> datetime:
+        matches = re.match(r"(\d\d\d\d) (\w+) (\d+)", date)
+        year, month, day = matches.groups()
+        date = f"{year}/{month}/{day}"
+        d = utils.try_parse(date, ("%Y/%b/%d", "%Y/%B/%d"))
+        if d:
+            return d
+        logger.error("Failed to parse date: %s", date)
+        return None
+
     def parse_conference(self, info: bs4.element.Tag) -> Conference:
         title_tag = info.find(lambda t: t.name == "a" and t.b is not None)
         url = title_tag.attrs.get("href", "")
@@ -30,7 +43,7 @@ class HEASARCFeed(ConferenceFeed):
             # get date
             matches = re.findall("Meeting Dates: (.+)", tag.text)
             if matches:
-                date = matches[0]
+                date = self.parse_date(matches[0])
                 continue
             # location
             matches = re.findall("Meeting Location: (.+)", tag.text)

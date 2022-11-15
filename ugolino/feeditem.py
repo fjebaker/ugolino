@@ -33,3 +33,8 @@ class FeedItem:
 
     def __hash___(self):
         return hash(self.get_fields())
+
+    def format_date(self):
+        if hasattr(self, "date") and self.date:
+            return self.date.strftime("%d %B %Y")
+        return ""

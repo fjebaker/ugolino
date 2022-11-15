@@ -4,6 +4,7 @@ import requests
 import bs4
 import re
 
+from datetime import datetime
 from typing import List, Union
 from dataclasses import dataclass
 from ugolino.feeditem import FeedItem, Url
@@ -16,7 +17,7 @@ class Conference(FeedItem):
     name: str
     description: str
     location: str
-    date: str
+    date: datetime
     link: Union[Url, None]
     source: str
 
@@ -25,14 +26,14 @@ class Conference(FeedItem):
         name: str,
         description: str,
         location: str,
-        date: str,
+        date: datetime,
         link: Url,
         source: str,
     ) -> "Conference":
         self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
         self.description = description.strip()
         self.location = location.strip()
-        self.date = date.strip()
+        self.date = date
         self.link = link.strip() if link else link
         if link:
             self.link = Url(link.strip())
@@ -68,7 +69,9 @@ class ConferenceFeed(abc.ABC):
             raise resp
 
     def fetch_and_parse(self, url: str, fmt: str = "html.parser") -> bs4.BeautifulSoup:
-        content = self.fetch(url)
-        # with open("temp", "r") as f:
-        #     content = f.read()
+        # content = self.fetch(url)
+        # with open("temp", "w") as f:
+        #     f.write(content)
+        with open("temp", "r") as f:
+            content = f.read()
         return bs4.BeautifulSoup(content, fmt)
