@@ -9,6 +9,7 @@ import ugolino.utils as utils
 
 logger = logging.Logger(__name__)
 
+
 class HEASARCFeed(ConferenceFeed):
     ROOT_URL = "https://heasarc.gsfc.nasa.gov/docs/heasarc/meetings.html"
 

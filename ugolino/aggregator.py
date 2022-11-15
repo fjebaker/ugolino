@@ -19,7 +19,7 @@ class Aggregator:
 
     def sort(self):
         self.conferences = sorted(self.conferences, key=lambda c: c.date)
-    
+
     def _filter_new(self, items: List):
         ...
 

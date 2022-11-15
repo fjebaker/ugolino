@@ -9,6 +9,7 @@ import ugolino.utils as utils
 
 logger = logging.Logger(__name__)
 
+
 class CACDFeed(ConferenceFeed):
     ROOT_URL = "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/meetings/rssFeed"
 
