@@ -72,9 +72,9 @@ class ConferenceFeed(abc.ABC):
             raise resp
 
     def fetch_and_parse(self, url: str, fmt: str = "html.parser") -> bs4.BeautifulSoup:
-        # content = self.fetch(url)
+        content = self.fetch(url)
         # with open("temp", "w") as f:
         #     f.write(content)
-        with open("temp", "r") as f:
-            content = f.read()
+        # with open("temp", "r") as f:
+        #     content = f.read()
         return bs4.BeautifulSoup(content, fmt)

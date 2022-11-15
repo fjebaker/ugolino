@@ -19,7 +19,7 @@ class RSSDigest(Digest):
 
     def conference(self, conf: Conference):
         entry = self.generator.add_entry()
-        entry.title(f"{conf.date}: {conf.name}")
+        entry.title(f"{conf.format_date()}: {conf.name}")
         if conf.link:
             entry.link(href=conf.link.text, rel="alternate")
         entry.link(href=conf.source, rel="related")
