@@ -1,7 +1,8 @@
 from typing import List, Tuple
 import inspect
 from urllib.parse import urlparse, parse_qsl, unquote_plus
-    
+
+
 class Url(object):
     def __init__(self, url: str):
         parts = urlparse(url)
@@ -19,8 +20,10 @@ class Url(object):
     def __hash__(self) -> int:
         return hash(self.parts)
 
+
 class FeedItem:
     Url = Url
+
     def get_fields(self) -> List[Tuple[str, str]]:
         fields = []
         for attr in inspect.getmembers(self):

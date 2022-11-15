@@ -4,6 +4,7 @@ from ugolino import Conference
 
 from feedgen.feed import FeedGenerator
 
+
 class RSSDigest(Digest):
     def setup(self):
         self.generator = FeedGenerator()
@@ -13,7 +14,7 @@ class RSSDigest(Digest):
         self.generator.description("todo")
 
     def drain(self) -> str:
-        rssfeed  = self.generator.rss_str(pretty=True)
+        rssfeed = self.generator.rss_str(pretty=True)
         return rssfeed.decode()
 
     def conference(self, conf: Conference):

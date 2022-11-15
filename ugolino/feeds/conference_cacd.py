@@ -1,17 +1,15 @@
-
 import bs4
 from typing import List, Tuple
 from ugolino import Conference, ConferenceFeed
+
 
 class CACDFeed(ConferenceFeed):
     ROOT_URL = "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/meetings/rssFeed"
 
     def sub_escapes(self, text: str) -> str:
-        return (
-            text.replace("&lt;", "<").replace("&gt;", ">")
-        )
+        return text.replace("&lt;", "<").replace("&gt;", ">")
 
-    def parse_description(self, descr: str) -> Tuple[str,str]:
+    def parse_description(self, descr: str) -> Tuple[str, str]:
         soup = bs4.BeautifulSoup(self.sub_escapes(descr), "xml")
         itt = (i for i in soup.find_all("TD"))
 
@@ -33,9 +31,7 @@ class CACDFeed(ConferenceFeed):
         date, location = self.parse_description(info.description.text)
         description = "None available."
 
-        return Conference(
-            title, description, location, date, link, source
-        )
+        return Conference(title, description, location, date, link, source)
 
     def scrape(self) -> List[Conference]:
         soup = self.fetch_and_parse(self.ROOT_URL, fmt="xml")

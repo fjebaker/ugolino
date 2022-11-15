@@ -17,7 +17,7 @@ class Conference(FeedItem):
     description: str
     location: str
     date: str
-    link: Union[Url,None] 
+    link: Union[Url, None]
     source: str
 
     def __init__(
@@ -52,6 +52,7 @@ class Conference(FeedItem):
     def __hash___(self):
         return 1
 
+
 class ConferenceFeed(abc.ABC):
     # want to look as human as possible, so will have all scrapers use the same requests instance
     session = requests.Session()
@@ -69,8 +70,8 @@ class ConferenceFeed(abc.ABC):
             logger.error("Request to %s failed: %s", url, resp)
             raise resp
 
-    def fetch_and_parse(self, url: str, fmt : str = "html.parser") -> bs4.BeautifulSoup:
+    def fetch_and_parse(self, url: str, fmt: str = "html.parser") -> bs4.BeautifulSoup:
         content = self.fetch(url)
         # with open("temp", "r") as f:
         #     content = f.read()
-        return bs4.BeautifulSoup(content,fmt)
+        return bs4.BeautifulSoup(content, fmt)

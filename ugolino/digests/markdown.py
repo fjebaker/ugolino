@@ -47,5 +47,5 @@ class MarkdownDigest(Digest):
         s += f"{conf.description}\n"
         s += "\n"
         s += f"[Source]({conf.source})\n"
-        
+
         self.body.append(s)

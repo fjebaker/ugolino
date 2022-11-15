@@ -20,7 +20,7 @@ class Digest(abc.ABC):
     @abc.abstractmethod
     def conference(self, conf: Conference) -> None:
         ...
-    
+
     @abc.abstractmethod
     def drain(self) -> str:
         ...
