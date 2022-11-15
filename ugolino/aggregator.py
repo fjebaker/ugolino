@@ -27,6 +27,12 @@ class Aggregator:
             seminars += ss
         self.seminars = seminars
 
+    def fetch(self, name: str):
+        if name == "iauiaa":
+            self.seminars = seminar_feeds[1]().scrape()
+        else:
+            raise Exception("Unknown feed {}".format(name))
+
     def fetch_all(self):
         self.fetch_conferences()
         self.fetch_seminars()

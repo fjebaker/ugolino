@@ -38,4 +38,4 @@ class RSSDigest(Digest):
             entry.link(href=sem.link.text, rel="self")
         entry.description(f"{sem.location}")
         entry.content(sem.description)
-        entry.author(author={"name" : sem.speaker})
+        entry.author(author={"name": sem.speaker})

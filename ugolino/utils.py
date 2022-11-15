@@ -1,7 +1,10 @@
+import logging
 from typing import Union, List
 from datetime import datetime
 
 from urllib.parse import urlparse, unquote_plus
+
+logger = logging.Logger(__name__)
 
 
 class Url(object):
@@ -26,7 +29,8 @@ def try_parse(date: str, patterns: List[str]) -> Union[None, datetime]:
     for pattern in patterns:
         try:
             d = datetime.strptime(date, pattern)
-        except ValueError:
+        except ValueError as e:
+            logger.debug("Parsing failed %s", e)
             continue
         else:
             return d
