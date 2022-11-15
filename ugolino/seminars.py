@@ -1,18 +1,20 @@
 import logging
 import abc
-import requests
-import bs4
 import re
 
-from typing import Union
 from datetime import datetime
+from typing import List, Union
 from dataclasses import dataclass
-from ugolino.feeditem import FeedItem, Url
+from ugolino import FeedItem, AbstractFeed
+from ugolino.utils import Url
+
+logger = logging.Logger(__name__)
 
 
 @dataclass
 class Seminar(FeedItem):
-    name: str
+    title: str
+    speaker: str
     description: str
     location: str
     date: datetime
@@ -21,32 +23,40 @@ class Seminar(FeedItem):
 
     def __init__(
         self,
-        name: str,
+        title: str,
+        speaker: str,
         description: str,
         location: str,
         date: datetime,
         link: Url,
         source: str,
     ) -> "Seminar":
-        self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
-        self.description = description.strip()
-        self.location = location.strip()
+        self.title = self.clean(title)
+        self.speaker = self.clean(speaker)
+        self.description = self.clean(description)
+        self.location = self.clean(location)
 
         if type(date) is not datetime:
-            raise Exception(f"Date for {name} is not datetime (is {type(date)}).")
+            raise Exception(f"Date for {title} is not datetime (is {type(date)}).")
         self.date = date
 
         if link:
             self.link = Url(link.strip())
         else:
-            logger.warn("%s is missing link", self.name)
+            logger.warn("%s is missing link", self.title)
             self.link = None
         self.source = source.strip()
 
-    def __eq__(self, conf: "Conference"):
-        if self.link and conf.link:
-            if self.link == conf.link:
+    def __eq__(self, other: "Seminar"):
+        if self.link and other.link:
+            if self.link == other.link and self.source != other.source:
                 return True
-        if self.name == conf.name:
+        if self.title == other.title and self.speaker == other.speaker:
             return True
         return False
+
+
+class SeminarFeed(AbstractFeed):
+    @abc.abstractmethod
+    def scrape(self) -> List[Seminar]:
+        ...

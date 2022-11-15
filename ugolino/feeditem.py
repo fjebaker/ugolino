@@ -1,3 +1,4 @@
+import re
 import inspect
 from typing import List, Tuple
 from datetime import datetime
@@ -22,6 +23,9 @@ class FeedItem:
         if hasattr(self, "date") and self.date:
             return self.date.strftime("%d %B %Y")
         return ""
+
+    def clean(self, i: str) -> str:
+        return re.sub("\s+", " ", i.strip().replace("\n", " "))
 
     def merge_with(self, other: "FeedItem"):
         assert type(self) == type(other)

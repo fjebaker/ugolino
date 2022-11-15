@@ -1,6 +1,6 @@
 from typing import List
 from ugolino.digests import Digest
-from ugolino import Conference
+from ugolino import Conference, Seminar
 
 
 class MarkdownDigest(Digest):
@@ -12,22 +12,16 @@ class MarkdownDigest(Digest):
             title, self.sanitize(header_title.strip().replace(" ", "-"))
         )
 
-    def create_toc(self) -> str:
-        toc = "## Table of Contents\n"
-        for conf in self.conferences:
-            i = self.create_header_anchor(f"{conf.date}: {conf.name}", conf.name)
-            toc += f"- {i}\n"
-        return toc
-
     def header(self) -> str:
-        toc = "## Conferences\n\n### Table of contents\n\n"
+        toc = f"## {self.title}\n\n### Table of contents\n\n"
         for i in self.toc_items:
             toc += f"- {i}\n"
         return toc + "\n\n"
 
-    def setup(self):
+    def setup(self, title: str):
         self.toc_items: List[str] = []
         self.body: List[str] = []
+        self.title = title
 
     def drain(self) -> str:
         return "\n\n".join(self.body)
@@ -48,5 +42,24 @@ class MarkdownDigest(Digest):
         s += f"{conf.description}\n"
         s += "\n"
         s += f"[Source]({conf.source})\n"
+
+        self.body.append(s)
+
+    def seminar(self, sem: Seminar) -> None:
+        date = sem.format_date()
+        self.toc_items.append(
+            self.create_header_anchor(f"{date}: {sem.speaker} - {sem.title}", sem.title)
+        )
+
+        s = f"### {sem.title}\n\n"
+        s += f"- Date: {date}\n"
+        s += f"- Speaker: {sem.speaker}\n"
+        s += f"- Location: {sem.location}\n"
+        if sem.link:
+            s += f"- [See this link]({sem.link.text}) for more info.\n"
+        s += "\n"
+        s += f"{sem.description}\n"
+        s += "\n"
+        s += f"[Source]({sem.source})\n"
 
         self.body.append(s)
