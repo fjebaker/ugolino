@@ -49,9 +49,6 @@ class Conference(FeedItem):
             return True
         return False
 
-    def __hash___(self):
-        return 1
-
 
 class ConferenceFeed(abc.ABC):
     # want to look as human as possible, so will have all scrapers use the same requests instance

@@ -30,3 +30,6 @@ class FeedItem:
             if not inspect.ismethod(attr[1]) and not attr[0].startswith("_"):
                 fields.push(attr)
         return fields
+
+    def __hash___(self):
+        return hash(self.get_fields())
