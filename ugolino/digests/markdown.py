@@ -19,15 +19,15 @@ class MarkdownDigest(Digest):
             toc += f"- {i}\n"
         return toc
 
-    def setup(self):
-        self.toc_items: List[str] = []
-        self.body: List[str] = []
-
     def header(self) -> str:
         toc = "## Table of contents\n\n"
         for i in self.toc_items:
             toc += f"- {i}\n"
         return toc + "\n\n"
+
+    def setup(self):
+        self.toc_items: List[str] = []
+        self.body: List[str] = []
 
     def drain(self) -> str:
         return "\n\n".join(self.body)

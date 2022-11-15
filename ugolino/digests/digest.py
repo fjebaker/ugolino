@@ -7,14 +7,15 @@ class Digest(abc.ABC):
     def __init__(self, aggregator):
         self.aggregator = aggregator
 
-    def setup(self) -> None:
-        return
-
     def header(self) -> str:
         return ""
 
     def suffix(self) -> str:
         return ""
+
+    @abc.abstractmethod
+    def setup(self) -> None:
+        ...
 
     @abc.abstractmethod
     def conference(self, conf: Conference) -> None:
