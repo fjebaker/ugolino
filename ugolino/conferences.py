@@ -33,8 +33,11 @@ class Conference(FeedItem):
         self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
         self.description = description.strip()
         self.location = location.strip()
+
+        if type(date) is not datetime:
+            raise Exception(f"Date for {name} is not datetime (is {type(date)}).")
         self.date = date
-        self.link = link.strip() if link else link
+
         if link:
             self.link = Url(link.strip())
         else:
