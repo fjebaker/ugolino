@@ -59,6 +59,8 @@ class ConferenceFeed(abc.ABC):
             logger.error("Request to %s failed: %s", url, resp)
             raise resp
 
-    def fetch_and_parse(self, url: str) -> bs4.BeautifulSoup:
-        content = self.fetch(url)
-        return bs4.BeautifulSoup(content, "html.parser")
+    def fetch_and_parse(self, url: str, fmt : str = "html.parser") -> bs4.BeautifulSoup:
+        # content = self.fetch(url)
+        with open("temp", "r") as f:
+            content = f.read()
+        return bs4.BeautifulSoup(content,fmt)
