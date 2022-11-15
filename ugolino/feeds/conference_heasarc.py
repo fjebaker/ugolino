@@ -5,6 +5,7 @@ import dateutil.parser
 from typing import List
 from ugolino import ConferenceFeed, Conference
 
+
 class HEASARCFeed(ConferenceFeed):
     ROOT_URL = "https://heasarc.gsfc.nasa.gov/docs/heasarc/meetings.html"
 
@@ -16,7 +17,7 @@ class HEASARCFeed(ConferenceFeed):
                 if "name" in tag.a.attrs and re.match(r"M\d+", tag.a.attrs["name"]):
                     # this tag is the first thing that marks a conference descriptioniption
                     yield tag
-    
+
     def parse_conference(self, info: bs4.element.Tag) -> Conference:
         title_tag = info.find(lambda t: t.name == "a" and t.b is not None)
         url = title_tag.attrs.get("href", "")
@@ -37,7 +38,7 @@ class HEASARCFeed(ConferenceFeed):
                 location = matches[0]
                 continue
             # description
-            description = tag.text 
+            description = tag.text
 
         return Conference(title, description, location, date, url, self.ROOT_URL)
 

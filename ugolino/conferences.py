@@ -10,6 +10,7 @@ from ugolino.feeditem import FeedItem
 
 logger = logging.Logger(__name__)
 
+
 @dataclass
 class Conference(FeedItem):
     name: str
@@ -19,7 +20,15 @@ class Conference(FeedItem):
     link: str
     source: str
 
-    def __init__(self, name: str, description: str, location: str, date: str, link: str, source:str) -> "Conference":
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        location: str,
+        date: str,
+        link: str,
+        source: str,
+    ) -> "Conference":
         self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
         self.description = description.strip()
         self.location = location.strip()
@@ -32,17 +41,6 @@ class Conference(FeedItem):
             self.link = ""
         self.source = source.strip()
 
-    def to_markdown(self) -> str:
-        s = f"### {self.name}\n\n"
-        s += f"- Date: {self.date}\n"
-        s += f"- Location: {self.location}\n"
-        if self.link:
-            s += f"- [See this link]({self.link}) for more info.\n"
-        s += "\n"
-        s += f"{self.description}\n"
-        s += "\n"
-        s += f"[Source]({self.source})\n"
-        return s
 
 class ConferenceFeed(abc.ABC):
     # want to look as human as possible, so will have all scrapers use the same requests instance
