@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ugolino"
+version = "0.1.0"
+description = "Feed aggregator."
+authors = ["fjebaker <fergusbkr@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+bs4 = "^0.0.1"
+requests = "^2.28.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+ipython = "^8.6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
