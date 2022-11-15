@@ -4,9 +4,9 @@ import requests
 import bs4
 import re
 
-from typing import List
+from typing import List, Union
 from dataclasses import dataclass
-from ugolino.feeditem import FeedItem
+from ugolino.feeditem import FeedItem, Url
 
 logger = logging.Logger(__name__)
 
@@ -17,7 +17,7 @@ class Conference(FeedItem):
     description: str
     location: str
     date: str
-    link: str
+    link: Union[Url,None] 
     source: str
 
     def __init__(
@@ -26,7 +26,7 @@ class Conference(FeedItem):
         description: str,
         location: str,
         date: str,
-        link: str,
+        link: Url,
         source: str,
     ) -> "Conference":
         self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
@@ -35,12 +35,22 @@ class Conference(FeedItem):
         self.date = date.strip()
         self.link = link.strip() if link else link
         if link:
-            self.link = link.strip()
+            self.link = Url(link.strip())
         else:
             logger.warn("%s is missing link", self.name)
-            self.link = ""
+            self.link = None
         self.source = source.strip()
 
+    def __eq__(self, conf: "Conference"):
+        if self.link and conf.link:
+            if self.link == conf.link:
+                return True
+        if self.name == conf.name:
+            return True
+        return False
+
+    def __hash___(self):
+        return 1
 
 class ConferenceFeed(abc.ABC):
     # want to look as human as possible, so will have all scrapers use the same requests instance
@@ -60,7 +70,7 @@ class ConferenceFeed(abc.ABC):
             raise resp
 
     def fetch_and_parse(self, url: str, fmt : str = "html.parser") -> bs4.BeautifulSoup:
-        # content = self.fetch(url)
-        with open("temp", "r") as f:
-            content = f.read()
+        content = self.fetch(url)
+        # with open("temp", "r") as f:
+        #     content = f.read()
         return bs4.BeautifulSoup(content,fmt)

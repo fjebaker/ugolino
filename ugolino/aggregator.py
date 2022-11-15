@@ -20,9 +20,22 @@ class Aggregator:
     def _filter_new(self, items: List):
         ...
 
+    def _filter_unique(self):
+        self.conferences = self.unique_keep_order(self.conferences)
+
     def _get_conferences(self):
         conferences = []
         for scraper in conference_feeds:
             cs = scraper().scrape()
             conferences += cs
         self.conferences = conferences
+
+    def unique_keep_order(self, items: List) -> List:
+        uniques = []
+        for i in items:
+            for j in uniques:
+                if i == j:
+                    print("already have {}".format(i.name))
+                    continue
+            uniques.append(i)
+        return uniques

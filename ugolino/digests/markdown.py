@@ -42,7 +42,7 @@ class MarkdownDigest(Digest):
         s += f"- Date: {conf.date}\n"
         s += f"- Location: {conf.location}\n"
         if conf.link:
-            s += f"- [See this link]({conf.link}) for more info.\n"
+            s += f"- [See this link]({conf.link.text}) for more info.\n"
         s += "\n"
         s += f"{conf.description}\n"
         s += "\n"
