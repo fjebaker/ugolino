@@ -40,7 +40,7 @@ class Aggregator:
                 if i == j:
                     print("Duplicate: {}".format(i.name))
                     i.merge(j)
-                    break 
+                    break
             else:
                 uniques.append(i)
         return uniques

@@ -3,6 +3,7 @@ import inspect
 from urllib.parse import urlparse, parse_qsl, unquote_plus
 from datetime import datetime
 
+
 class Url(object):
     def __init__(self, url: str):
         parts = urlparse(url)
@@ -19,6 +20,7 @@ class Url(object):
 
     def __hash__(self) -> int:
         return hash(self.parts)
+
 
 class FeedItem:
     Url = Url
@@ -39,18 +41,18 @@ class FeedItem:
         return ""
 
     def merge(self, other: "FeedItem"):
-        assert(type(self) == type(other))
+        assert type(self) == type(other)
         for (field, _) in self.get_fields():
             f1 = self.__getattribute__(field)
             f2 = other.__getattribute__(field)
 
-            # do nothing if other doesn't have 
+            # do nothing if other doesn't have
             if f1 and not f2:
                 continue
             # overwrite if not set
             if not f1 and f2:
                 self.__setattr__(field, f2)
-            
+
             if type(f1) == type(f2):
                 # take longest string
                 if type(f1) is str:
@@ -60,4 +62,6 @@ class FeedItem:
                 if type(f1) is datetime:
                     continue
             else:
-                logger.warn(f"Comparing fields of {type(self)}: type mismatch for {field}: {type(f1)}, {type(f2)}")
+                logger.warn(
+                    f"Comparing fields of {type(self)}: type mismatch for {field}: {type(f1)}, {type(f2)}"
+                )
