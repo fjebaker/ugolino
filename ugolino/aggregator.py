@@ -17,10 +17,13 @@ class Aggregator:
         self._get_conferences()
         # ... todo: others
 
+    def sort(self):
+        self.conferences = sorted(self.conferences, key=lambda c: c.date)
+
     def _filter_new(self, items: List):
         ...
 
-    def _filter_unique(self):
+    def filter_unique(self):
         self.conferences = self.unique_keep_order(self.conferences)
 
     def _get_conferences(self):
@@ -35,7 +38,9 @@ class Aggregator:
         for i in items:
             for j in uniques:
                 if i == j:
-                    print("already have {}".format(i.name))
-                    continue
-            uniques.append(i)
+                    print("Duplicate: {}".format(i.name))
+                    i.merge(j)
+                    break
+            else:
+                uniques.append(i)
         return uniques

@@ -33,13 +33,14 @@ class MarkdownDigest(Digest):
         return "\n\n".join(self.body)
 
     def conference(self, conf: Conference) -> None:
+        date = conf.format_date()
         # create toc entry
         self.toc_items.append(
-            self.create_header_anchor(f"{conf.date}: {conf.name}", conf.name)
+            self.create_header_anchor(f"{date}: {conf.name}", conf.name)
         )
 
         s = f"### {conf.name}\n\n"
-        s += f"- Date: {conf.date}\n"
+        s += f"- Date: {date}\n"
         s += f"- Location: {conf.location}\n"
         if conf.link:
             s += f"- [See this link]({conf.link.text}) for more info.\n"
