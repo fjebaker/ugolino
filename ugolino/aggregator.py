@@ -1,5 +1,5 @@
 from typing import List
-from ugolino import Conference
+from ugolino import Conference, FeedItem
 from ugolino.feeds import conference_feeds
 from ugolino.digests import MarkdownDigest, RSSDigest
 
@@ -33,13 +33,13 @@ class Aggregator:
             conferences += cs
         self.conferences = conferences
 
-    def unique_keep_order(self, items: List) -> List:
+    def unique_keep_order(self, items: List[FeedItem]) -> List:
         uniques = []
         for i in items:
             for j in uniques:
                 if i == j:
                     print("Duplicate: {}".format(i.name))
-                    i.merge(j)
+                    i.merge_with(j)
                     break
             else:
                 uniques.append(i)

@@ -1,30 +1,13 @@
-from typing import List, Tuple
 import inspect
-from urllib.parse import urlparse, parse_qsl, unquote_plus
+from typing import List, Tuple
 from datetime import datetime
 
+import logging
 
-class Url(object):
-    def __init__(self, url: str):
-        parts = urlparse(url)
-        _path = unquote_plus(parts.path)
-        # catch just "/"
-        if _path.endswith("/"):
-            _path = _path[0:-1]
-        parts = parts._replace(query="", path=_path)
-        self.parts = parts
-        self.text = url
-
-    def __eq__(self, other) -> bool:
-        return self.parts == other.parts
-
-    def __hash__(self) -> int:
-        return hash(self.parts)
+logger = logging.Logger(__name__)
 
 
 class FeedItem:
-    Url = Url
-
     def get_fields(self) -> List[Tuple[str, str]]:
         fields = []
         for attr in inspect.getmembers(self):
@@ -40,7 +23,7 @@ class FeedItem:
             return self.date.strftime("%d %B %Y")
         return ""
 
-    def merge(self, other: "FeedItem"):
+    def merge_with(self, other: "FeedItem"):
         assert type(self) == type(other)
         for (field, _) in self.get_fields():
             f1 = self.__getattribute__(field)

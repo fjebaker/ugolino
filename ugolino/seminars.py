@@ -1,18 +1,17 @@
 import logging
 import abc
+import requests
+import bs4
 import re
 
+from typing import Union
 from datetime import datetime
-from typing import List, Union
 from dataclasses import dataclass
-from ugolino import FeedItem, AbstractFeed
-from ugolino.utils import Url
-
-logger = logging.Logger(__name__)
+from ugolino.feeditem import FeedItem, Url
 
 
 @dataclass
-class Conference(FeedItem):
+class Seminar(FeedItem):
     name: str
     description: str
     location: str
@@ -28,7 +27,7 @@ class Conference(FeedItem):
         date: datetime,
         link: Url,
         source: str,
-    ) -> "Conference":
+    ) -> "Seminar":
         self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
         self.description = description.strip()
         self.location = location.strip()
@@ -51,9 +50,3 @@ class Conference(FeedItem):
         if self.name == conf.name:
             return True
         return False
-
-
-class ConferenceFeed(AbstractFeed):
-    @abc.abstractmethod
-    def scrape(self) -> List[Conference]:
-        ...

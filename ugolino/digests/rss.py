@@ -10,8 +10,12 @@ class RSSDigest(Digest):
         self.generator = FeedGenerator()
         self.generator.language("en")
         self.generator.title("astro-feed")
-        self.generator.link(href="https://github.com/astro-grou-bristol/astro-feeds", rel="self")
-        self.generator.description("Astrophysics and astronomy conferences, aggregated from different sources.")
+        self.generator.link(
+            href="https://github.com/astro-grou-bristol/astro-feeds", rel="self"
+        )
+        self.generator.description(
+            "Astrophysics and astronomy conferences, aggregated from different sources."
+        )
 
     def drain(self) -> str:
         rssfeed = self.generator.rss_str(pretty=True)
