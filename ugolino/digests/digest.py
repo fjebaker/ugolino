@@ -17,17 +17,22 @@ class Digest(abc.ABC):
         return ""
 
     @abc.abstractmethod
-    def conference(self, conf: Conference):
+    def conference(self, conf: Conference) -> None:
+        ...
+    
+    @abc.abstractmethod
+    def drain(self) -> str:
         ...
 
     # ... todo: others
 
     def digest(self) -> str:
         self.setup()
-        confs = [self.conference(conf) for conf in self.aggregator.conferences]
+        for conf in self.aggregator.conferences:
+            self.conference(conf)
 
         content = self.header()
-        content += "\n\n".join(confs)
+        content += self.drain()
         content += self.suffix()
 
         return content

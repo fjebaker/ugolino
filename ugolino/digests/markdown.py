@@ -21,6 +21,7 @@ class MarkdownDigest(Digest):
 
     def setup(self):
         self.toc_items: List[str] = []
+        self.body: List[str] = []
 
     def header(self) -> str:
         toc = "## Table of contents\n\n"
@@ -28,7 +29,11 @@ class MarkdownDigest(Digest):
             toc += f"- {i}\n"
         return toc + "\n\n"
 
-    def conference(self, conf: Conference) -> str:
+    def drain(self) -> str:
+        return "\n\n".join(self.body)
+
+    def conference(self, conf: Conference) -> None:
+        # create toc entry
         self.toc_items.append(
             self.create_header_anchor(f"{conf.date}: {conf.name}", conf.name)
         )
@@ -42,4 +47,5 @@ class MarkdownDigest(Digest):
         s += f"{conf.description}\n"
         s += "\n"
         s += f"[Source]({conf.source})\n"
-        return s
+        
+        self.body.append(s)
