@@ -1,6 +1,6 @@
 from typing import List
 from ugolino.digests import Digest
-from ugolino import Conference
+from ugolino import Conference, Seminar
 
 from feedgen.feed import FeedGenerator
 
@@ -26,16 +26,16 @@ class RSSDigest(Digest):
         entry = self.generator.add_entry()
         entry.title(f"{conf.format_date()}: {conf.name}")
         if conf.link:
-            entry.link(href=conf.link.text, rel="related")
-        entry.link(href=conf.source, rel="via")
+            entry.source(url=conf.link.text, title="Link to page")
         entry.description(f"{conf.location}")
         entry.content(conf.description)
 
-    def seminar(self, sem: Conference):
+    def seminar(self, sem: Seminar):
         entry = self.generator.add_entry()
         entry.title(f"{sem.format_date()}: {sem.speaker} - {sem.title}")
         if sem.link:
-            entry.link(href=sem.link.text, rel="related")
-        entry.link(href=sem.source, rel="via")
+            entry.source(url=sem.source, title="Link to page")
+            entry.link(href=sem.link.text, rel="self")
         entry.description(f"{sem.location}")
         entry.content(sem.description)
+        entry.author(author={"name" : sem.speaker})
