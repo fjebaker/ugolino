@@ -39,6 +39,8 @@ class Aggregator:
             for j in uniques:
                 if i == j:
                     print("Duplicate: {}".format(i.name))
-                    continue
-            uniques.append(i)
+                    i.merge(j)
+                    break 
+            else:
+                uniques.append(i)
         return uniques

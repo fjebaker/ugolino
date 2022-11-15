@@ -46,7 +46,7 @@ class CACDFeed(ConferenceFeed):
         source = info.guid.text
 
         date, location = self.parse_description(info.description.text)
-        description = "None available."
+        description = "No information available."
 
         return Conference(title, description, location, date, link, source)
 
