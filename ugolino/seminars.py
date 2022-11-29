@@ -51,7 +51,10 @@ class Seminar(FeedItem):
         if self.link and other.link:
             if self.link == other.link and self.source != other.source:
                 return True
-        if self.title == other.title and self.speaker == other.speaker:
+        if (
+            self.title.lower() == other.title.lower()
+            and self.speaker.lower() == other.speaker.lower()
+        ):
             return True
         return False
 

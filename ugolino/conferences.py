@@ -48,7 +48,7 @@ class Conference(FeedItem):
         if self.link and conf.link:
             if self.link == conf.link:
                 return True
-        if self.name == conf.name:
+        if self.name.lower() == conf.name.lower():
             return True
         return False
 
