@@ -53,7 +53,7 @@ class Aggregator:
         for i in items:
             for j in uniques:
                 if i == j:
-                    print("Duplicate: {}".format(i.name))
+                    print("Duplicate: {}".format(i.__repr__()))
                     i.merge_with(j)
                     break
             else:
