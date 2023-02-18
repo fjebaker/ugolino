@@ -1,7 +1,7 @@
 import logging
 import re
 import bs4
-from datetime import datetime, date
+from datetime import datetime
 
 from typing import List
 from ugolino import ConferenceFeed, Conference
@@ -54,7 +54,15 @@ class HEASARCFeed(ConferenceFeed):
             # description
             description = tag.text
 
-        return Conference(title, description, location, date, url, self.ROOT_URL)
+        try:
+            conf = Conference(title, description, location, date, url, self.ROOT_URL)
+            return conf
+        except Exception as e:
+            # print some debug info
+            print(
+                f"Title: {title}\nDescription: {description}\nLocation: {location}\nDate: {date}\nUrl: {url}\n"
+            )
+            raise e
 
     def scrape(self) -> List[Conference]:
         soup = self.fetch_and_parse(self.ROOT_URL)

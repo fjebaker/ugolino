@@ -1,7 +1,11 @@
+import logging
+
 from typing import List
 from ugolino import Conference, FeedItem
 from ugolino.feeds import conference_feeds, seminar_feeds
 from ugolino.digests import MarkdownDigest, RSSDigest
+
+logger = logging.Logger(__name__)
 
 
 class Aggregator:
@@ -16,15 +20,21 @@ class Aggregator:
     def fetch_conferences(self):
         conferences = []
         for scraper in conference_feeds:
-            cs = scraper().scrape()
-            conferences += cs
+            try:
+                cs = scraper().scrape()
+                conferences += cs
+            except Exception as e:
+                logger.exception("Conference %s raised error", scraper)
         self.conferences = conferences
 
     def fetch_seminars(self):
         seminars = []
         for scraper in seminar_feeds:
-            ss = scraper().scrape()
-            seminars += ss
+            try:
+                ss = scraper().scrape()
+                seminars += ss
+            except Exception as e:
+                logger.exception("Seminar %s raised error", scraper)
         self.seminars = seminars
 
     def fetch(self, name: str):

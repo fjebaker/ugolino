@@ -1,6 +1,3 @@
-
-
-
 import logging
 import re
 import bs4
@@ -26,7 +23,7 @@ class AthenaFeed(ConferenceFeed):
         location = description.strip()
         date = self.parse_date(date_info.strip())
         return Conference(title, description, location, date, link, self.ROOT_URL)
-    
+
     def parse_date(self, date: str) -> datetime:
         matches = re.match(r"(\d+).?(\d+) (\w+) (\d+)", date)
         if matches:
@@ -35,7 +32,7 @@ class AthenaFeed(ConferenceFeed):
             d = utils.try_parse(s_date, ("%Y/%b/%d",))
             if d:
                 return d
-        # some of them are several months, so 
+        # some of them are several months, so
         # we'll just guess the year as current year + 1
         matches = re.match(r"(\d+) (\w+)", date)
         if matches:
@@ -48,8 +45,8 @@ class AthenaFeed(ConferenceFeed):
         logger.error("Failed to parse date: %s", date)
         raise "Could not parse date."
 
-
     def scrape(self) -> List[Conference]:
         soup = self.fetch_and_parse(self.ROOT_URL)
-        return [self.scrape_conference(i) for i in soup.find_all("li", class_="panel-body")]
-
+        return [
+            self.scrape_conference(i) for i in soup.find_all("li", class_="panel-body")
+        ]

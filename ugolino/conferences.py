@@ -30,7 +30,11 @@ class Conference(FeedItem):
         source: str,
     ) -> "Conference":
         self.name = re.sub("\s+", " ", name.strip().replace("\n", " "))
-        self.description = description.strip()
+        # catch missing descriptions
+        if not description:
+            self.description = "No description."
+        else:
+            self.description = description.strip()
         self.location = location.strip()
 
         if type(date) is not datetime:
